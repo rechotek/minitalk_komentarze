@@ -6,7 +6,7 @@
 /*   By: mrechuli <mrechuli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 16:45:04 by mrechuli          #+#    #+#             */
-/*   Updated: 2024/05/12 18:26:13 by mrechuli         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:32:13 by mrechuli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,11 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/types.h> // biblioteka, ktora definiuje rozne typy danych uzywanych w UNIXie, np. pid_t (identyfikator procesu - process identifier)
+
+typedef struct s_state
+{
+	int	character;
+	int	index;
+}		t_state
 
 #endif
