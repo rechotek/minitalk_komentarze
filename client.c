@@ -16,14 +16,14 @@ void send_sig(pid_t pid, char c)
 {
 	int bit;
 
-	bit = 0; // x to indeks bajta, kazde miejsce w bajcie to bit
+	bit = 0; // bit to indeks bajta, kazde miejsce w bajcie to bit
 	while (bit <= 7) // iteruje od 0 do 7 bo mamy 8 bitow w bajcie
 	{
 		if (c & (1 >> bit)) // 1 >> bit - sprawdza czy na danym bicie w znaku c jest 1; np. c = 10010001, bit = 0, czyli przeskakuje o 0 bitow w prawo i sprawdzam czy jest tam 1, potem zwiekszam bit++ i w kolejnym wywolaniu robie 1 ruch w prawo i sprawdzam czy jest tam 1, nie ma wiec wykonuje else
-			kill(pid, SIGUSR1);
+			kill(pid, SIGUSR1); // SIGUSR1 - wysyla 1
 		else
-			kill(pid, SIGUSR2);
-		usleep(100);
+			kill(pid, SIGUSR2); // SIGUSR2 - wysyla 0
+		usleep(100); // zanim wysle kolejny bit, program ma zatrzymac sie (uspic) na 100 mikrosekund, aby sygnaly sie na siebie nie nakladaly
 		bit++;
 	}
 }

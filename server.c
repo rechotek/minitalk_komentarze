@@ -12,13 +12,38 @@
 
 #include "minitalk.h"
 
-// static oznacza ze zmienna global_state jest dostepna tylko w pliku w ktorym zostala zdefiniowna
+// static oznacza ze zmienna global jest dostepna tylko w pliku w ktorym zostala zdefiniowna
 // jest to funkcja globalna, poniewaz jest zdefiniowana poza funkcja, ale przez static jest dostepna tylko w tym pliku
-static t_state global_state = {0,0}; // inicjalizauje globalna zmienna global_state, ktora ustawia wartosci pol struktury t_state na 0. W tym przypadku ustawia wartosc character oraz index na zero
+static t_state global = {0,0}; // inicjalizauje globalna zmienna global, ktora ustawia wartosci pol struktury t_state na 0. W tym przypadku ustawia wartosc character oraz index na zero
+
+void	sig_1(int sig)
+{
+	(void)sig; // funkcja sig_1 nie uzywa argumentu sig, jednak jest wymagany przez standard jezyka, aby uniknac ostrzezenia o nieuzywanej pamieci to pisze (void)sig
+	global.character |= (1 << global.index); // | jest to operator OR, jego dzialanie wytlumaczylem w WORDie. W tym kontekscie zamieni dane miejsce w indexie na 1 (bo w OR 0 i 1, 1 i 0, 1 i 1 dadza 1). W zadaniu ustawilem globalna zmienna na {0, 0}, wiec kazde wywolanie tego zmieni dane indexowe miejsce na 1 
+	global.index++;
+	if (global.index == 8)
+	{
+		write (1, &global.character, 1);
+		global.character = 0;
+		global.index = 0;
+	}
+}
+
+void	sig_2(int sig) // sig_2 odpowiada za 0. Jeśli wiec wpada sygnal to nie musze nic zmieniac poza iteracja indexu (bo ustawilem 0 domyslnie)
+{
+	(void)sig; // funkcja sig_2 nie uzywa argumentu sig, jednak jest wymagany przez standard jezyka, aby uniknac ostrzezenia o nieuzywanej pamieci to pisze (void)sig
+	global.index++;
+	if (global.index == 8)
+	{
+		write (1, &global.character, 1);
+		global.character = 0;
+		global.index = 0;
+	}
+}
 
 void setup_signal_handler(void)
 {
-	struct sigaction sa1;
+	struct sigaction sa1; // odnosze sie do okreslonej struktury sigaction tworzac sa1
 	struct sigaction sa2;
 
 	sa1.sa_handler = sig_1; // sa_handler to wskaznik na funkcje ktora bedzie obslugiwac sygnal (jest to jedno z pol struktury sigaction), wiec ustawiam sa_handler dla sa1 na sig_1 (tam jest zapisana cala funkcja)
