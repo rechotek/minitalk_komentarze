@@ -25,6 +25,6 @@ typedef struct s_state
 {
 	int	character;
 	int	index;
-}		t_state
+}		t_state;
 
 #endif
